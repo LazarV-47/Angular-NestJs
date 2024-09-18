@@ -1,0 +1,40 @@
+<app-navbar></app-navbar>
+<mat-card class="game-detail-card">
+  <mat-card-content>
+    <!-- Game Image and Description Row -->
+    <div class="game-info">
+      <img *ngIf="game?.picture" [src]="backendUrl + game?.picture" alt="{{ game!.title }}" class="game-image"/>
+      <div class="game-description">
+        <p>{{ game?.description }}</p>
+      </div>
+    </div>
+
+    <!-- Game Title -->
+    <h2 class="game-title">{{ game?.title }}</h2>
+
+    <!-- Genre and Status Row -->
+    <div class="genre-status-row">
+      <span>Genre: {{ game?.genre }}</span>
+      <span>Status: {{ game?.status }}</span>
+    </div>
+
+    <!-- Review Information -->
+    <div *ngIf="game?.review" class="review-info">
+      <h3>Review</h3>
+      <p>Rating: {{ game?.review!.rating }}</p>
+      <p>Comment: {{ game?.review!.comment }}</p>
+      <button mat-raised-button color="accent" (click)="editReview()">Edit Review</button>
+      <button mat-raised-button color="warn" (click)="deleteReview()">Delete Review</button>
+    </div>
+
+    <!-- Add Review Button -->
+    <div *ngIf="!game?.review">
+      <button mat-raised-button color="primary" (click)="onAddReview()" [disabled]="showReviewForm">Add Review</button>
+    </div>
+  </mat-card-content>
+
+  <!-- Edit Game Button -->
+  <mat-card-actions>
+    <button mat-flat-button color="primary" [routerLink]="['/edit-game', game!.id]">Edit Game</button>
+  </mat-card-actions>
+</mat-card>

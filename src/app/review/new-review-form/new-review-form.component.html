@@ -1,0 +1,21 @@
+<app-navbar></app-navbar>
+<mat-card>
+  <mat-card-title>Add Review</mat-card-title>
+  <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Rating</mat-label>
+      <input matInput type="number" formControlName="rating" min="1" max="10">
+      <mat-error *ngIf="reviewForm.get('rating')?.hasError('required')">Rating is required</mat-error>
+      <mat-error *ngIf="reviewForm.get('rating')?.hasError('min')">Minimum value is 1</mat-error>
+      <mat-error *ngIf="reviewForm.get('rating')?.hasError('max')">Maximum value is 10</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Comment</mat-label>
+      <textarea matInput formControlName="comment"></textarea>
+      <mat-error *ngIf="reviewForm.get('comment')?.hasError('required')">Comment is required</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Submit Review</button>
+  </form>
+</mat-card>

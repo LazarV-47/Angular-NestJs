@@ -1,0 +1,21 @@
+<div class="navbar-container">
+  <div class="user-info">
+    <mat-icon *ngIf="profilePicture" class="profile-picture">
+      <img [src]="profilePicture" alt="Profile Picture" class="profile-image">
+    </mat-icon>
+    <span *ngIf="username" class="username">{{ username }}</span>
+  </div>
+
+  <div class="nav-buttons">
+    <button mat-raised-button color="accent" routerLink="/new-game">
+      <mat-icon>add_circle</mat-icon>
+      New Game
+    </button>
+    <button mat-raised-button color="accent" routerLink="/game-list">
+      <mat-icon>view_list</mat-icon>
+      Game List
+    </button>
+  </div>
+
+  <button mat-raised-button color="warn" (click)="logout()">Log Out</button>
+</div>

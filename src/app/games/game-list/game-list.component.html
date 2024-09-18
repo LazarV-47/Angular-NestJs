@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+<div class="game-list-container">
+  <div class="center-title-card">
+    <mat-card>
+      <mat-card-title>Your Games</mat-card-title>
+    </mat-card>
+  </div>
+
+  <!-- Displaying the list of games -->
+  <div *ngIf="games$ | async as games">
+    <div *ngFor="let game of games" class="game-item">
+      <mat-card class="full-width-card" [routerLink]="['/game-detail', game.id]">
+        <app-single-game [game]="game"></app-single-game>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="loading$ | async">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    <p>Loading games...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error$ | async as error">
+    <mat-error>{{ error }}</mat-error>
+  </div>
+</div>

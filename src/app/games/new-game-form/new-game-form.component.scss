@@ -1,0 +1,44 @@
+.game-form {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  mat-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+  }
+
+  .centered-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .file-input-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  #picture {
+    display: block;
+    margin-top: 8px;
+  }
+
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}

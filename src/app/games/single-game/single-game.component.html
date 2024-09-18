@@ -1,0 +1,39 @@
+<mat-card class="single-game-container">
+  <div class="game-info-container">
+    <!-- Game Picture -->
+    <img [src]="backendUrl + game.picture" alt="{{ game.title }}" class="game-image">
+
+    <!-- Game Info -->
+    <div class="game-details">
+      <!-- Title and Genre -->
+      <div class="detail-column">
+        <mat-card-title>{{ game.title }}</mat-card-title>
+        <mat-card-subtitle>Genre: {{ game.genre }}</mat-card-subtitle>
+      </div>
+
+      <!-- Status -->
+      <div class="detail-column">
+        <mat-card-content>
+          <p>Status: {{ game.status }}</p>
+        </mat-card-content>
+      </div>
+
+      <!-- Rating -->
+      <div class="detail-column">
+        <mat-card-content>
+          <p *ngIf="game.review; else pendingReview">Rating: {{ game.review.rating }}/10</p>
+          <ng-template #pendingReview>
+            <p>Review: Pending</p>
+          </ng-template>
+        </mat-card-content>
+      </div>
+    </div>
+
+    <!-- Delete Button -->
+    <div class="delete-button-container">
+      <button mat-fab aria-label color="warn" (click)="deleteGame($event)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-card>

@@ -1,0 +1,39 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .auth-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-title {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .profile-picture-container {
+    margin: 20px 0;
+  }
+  
+  .submit-button {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .switch-button {
+    display: block;
+    margin: 20px auto 0;
+    width: 100%;
+  }
+  

@@ -1,0 +1,49 @@
+<div class="form-container">
+  <mat-card class="auth-card">
+    <mat-card-title class="card-title">Register</mat-card-title>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="registerForm" enctype="multipart/form-data">
+      <!-- Username Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" required />
+        <mat-error *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+          Username is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Email Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required />
+        <mat-error *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          Valid email is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password Field -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" required />
+        <mat-error *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          Password is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Profile Picture Field -->
+      <div class="profile-picture-container">
+        <label for="profilePicture">Profile Picture</label>
+        <input type="file" id="profilePicture" (change)="onFileSelected($event)" />
+      </div>
+
+      <!-- Submit Button -->
+      <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid" class="submit-button">
+        Register
+      </button>
+    </form>
+
+    <button mat-stroked-button color="accent" routerLink="/login" class="switch-button">
+      Already have an account? Login here
+    </button>
+  </mat-card>
+</div>

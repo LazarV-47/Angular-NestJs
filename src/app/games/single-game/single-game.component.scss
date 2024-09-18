@@ -1,0 +1,56 @@
+.single-game-container {
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.single-game-container:hover {
+  transform: scale(1.02);
+}
+
+.game-info-container {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  gap: 20px; /* Adds space between elements */
+  flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.game-image {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0; /* Prevent the image from shrinking */
+}
+
+.game-details {
+  display: flex;
+  align-items: flex-start; /* Aligns items to the top */
+  gap: 30px; /* Space between detail columns */
+  flex: 2; /* Allows the game details to take up more space */
+}
+
+.detail-column {
+  display: flex;
+  flex-direction: column; /* Stack items vertically within each column */
+}
+
+.delete-button-container {
+  margin-left: auto; /* Push the button to the right */
+  align-self: center; /* Align the button to the top of the card */
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+mat-card-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+mat-card-content p {
+  margin: 0;
+}

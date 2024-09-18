@@ -1,0 +1,52 @@
+<app-navbar></app-navbar>
+<form [formGroup]="gameForm" (ngSubmit)="addGame()" class="game-form">
+  <mat-card>
+    <mat-card-title class="centered-title">Add a New Game</mat-card-title>
+    <mat-card-content>
+      <div class="form-group">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput id="title" formControlName="title" required>
+          <mat-error *ngIf="gameForm.get('title')?.hasError('required')">Title is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Genre</mat-label>
+          <input matInput id="genre" formControlName="genre" required>
+          <mat-error *ngIf="gameForm.get('genre')?.hasError('required')">Genre is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput id="description" formControlName="description" rows="5" required></textarea>
+          <mat-error *ngIf="gameForm.get('description')?.hasError('required')">Description is required</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Status</mat-label>
+          <mat-select id="status" formControlName="status">
+            <mat-option value="played">Played</mat-option>
+            <mat-option value="playing">Playing</mat-option>
+            <mat-option value="want to play">Want to Play</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label for="picture" class="file-input-label">Game Cover</label>
+        <input type="file" id="picture" (change)="onFileChange($event)">
+      </div>
+      
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" [disabled]="gameForm.invalid" class="submit-button">Add Game</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

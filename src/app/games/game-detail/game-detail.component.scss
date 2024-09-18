@@ -1,0 +1,53 @@
+.game-detail-card {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.game-info {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.game-image {
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.game-description {
+  flex: 1;
+  overflow: hidden;
+}
+
+.game-title {
+  text-align: center;
+  margin: 16px 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.genre-status-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.review-info {
+  margin: 20px 0;
+}
+
+.review-form {
+  margin: 20px 0;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
