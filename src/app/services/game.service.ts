@@ -11,12 +11,11 @@ export class GameService {
 
   constructor(private http: HttpClient) {}
 
-  addGame(game: Partial<Game>): Observable<Game> {
+  addGame(game: Game): Observable<Game> {
     const formData = new FormData();
     formData.append('title', game.title || '');
     formData.append('genre', game.genre || '');
     formData.append('description', game.description || '');
-    formData.append('status', game.status || 'want to play');
     if (game.picture) {
       formData.append('picture', game.picture);
     }
@@ -29,14 +28,20 @@ export class GameService {
   }
 
 
-  updateGame(id: number, gameData: FormData) {
-    console.log("update service called");
-    return this.http.patch<Game>(`${this.apiUrl}/updateGame/${id}`, gameData);
+  updateGame(game: Game): Observable<Game> {
+    const formData = new FormData();
+    formData.append('title', game.title);
+    formData.append('genre', game.genre);
+    formData.append('description', game.description);
+    if (game.picture) {
+      formData.append('picture', game.picture);
+    }
+    return this.http.put<Game>(`${this.apiUrl}/${game.id}`, formData);
   }
 
 
-  deleteGame(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/deleteGame/${id}`);
+  deleteGame(gameId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/deleteGame/${gameId}`);
   }
 
 }

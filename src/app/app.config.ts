@@ -15,6 +15,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { GameService } from './services/game.service';
 import { ReviewService } from './services/review.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { LikedGameService } from './services/liked-game.service';
+import { likedGameReducer } from './store/liked-game/liked-game.reducer';
+import { LikedGameEffects } from './store/liked-game/liked-games.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,13 +33,15 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(AppRoutingModule),
     AuthService, 
     GameService,
-    ReviewService, 
+    ReviewService,
+    LikedGameService,
     provideStore({
       auth: authReducer,
       games: gamesReducer,
-      reviews: reviewsReducer
+      reviews: reviewsReducer,
+      likedGames: likedGameReducer
     }), 
-    provideEffects([AuthEffects, GamesEffects, ReviewsEffects]), 
+    provideEffects([AuthEffects, GamesEffects, ReviewsEffects, LikedGameEffects]), 
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), 
     provideAnimationsAsync(),    
     ],

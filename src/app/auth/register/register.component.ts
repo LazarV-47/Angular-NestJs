@@ -6,10 +6,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AuthState } from '../auth.reducer';
+import { AuthState } from '../auth.state';
 import { register } from '../auth.actions';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { RegisterDTO } from '../auth-dto/register.dto';
 
 @Component({
   selector: 'app-register',
@@ -44,9 +45,11 @@ export class RegisterComponent {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      const { username, email, password } = this.registerForm.value;
-      console.log("Form Submitted", this.registerForm.value);
-      this.store.dispatch(register({ username, email, password, picture: this.selectedFile }));
+      const credentials: RegisterDTO = this.registerForm.value;
+      credentials.picture = this.selectedFile;
+      //console.log("Form Submitted", this.registerForm.value);
+      console.log("Passed info for register", credentials);
+      this.store.dispatch(register({credentials}));
     }
   }
 }

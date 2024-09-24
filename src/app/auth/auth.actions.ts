@@ -1,9 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from './user.model';
+import { LoginDTO } from './auth-dto/login.dto';
+import { RegisterDTO } from './auth-dto/register.dto';
 
 export const login = createAction(
   '[Auth] Login',
-  props<{ username: string; password: string }>()
+  props<{ credentials: LoginDTO }>()
 );
 
 export const loginSuccess = createAction(
@@ -22,7 +24,7 @@ export const logout = createAction(
 
 export const register = createAction(
   '[Auth] Register',
-  props<{ username: string; email: string; password: string; picture: File | null }>()
+  props<{ credentials: RegisterDTO }>()
 );
 
 export const registerSuccess = createAction(
@@ -35,10 +37,12 @@ export const registerFailure = createAction(
   props<{ error: string }>()
 );
 
-export const setUser = createAction(
-  '[Auth] Set User',
-  props<{ user: User }>()
-);
+// export const setUser = createAction(
+//   '[Auth] Set User',
+//   props<{ user: User }>()
+// );
 
-export const clearUser = createAction('[Auth] Clear User');
+// export const clearUser = createAction(
+//   '[Auth] Clear User'
+// );
 

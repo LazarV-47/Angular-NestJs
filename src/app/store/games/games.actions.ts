@@ -19,7 +19,7 @@ export const loadGamesFailure = createAction(
 
 export const addGame = createAction(
     '[Games] Add Game',
-    props<{ game: Partial<Game> }>()
+    props<{ game: Game }>()
     );
 
 export const addGameSuccess = createAction(
@@ -33,23 +33,6 @@ export const addGameFailure = createAction(
     );
 
 
-
-export const deleteGame = createAction(
-    '[Game] Delete Game',
-    props<{ id: number }>()
-    );
-    
-export const deleteGameSuccess = createAction(
-    '[Game] Delete Game Success',
-    props<{ id: number }>()
-    );
-
-export const deleteGameFailure = createAction(
-    '[Game] Delete Game Failure',
-    props<{ error: any }>()
-    );
-
-    
 
 export const updateGame = createAction(
     '[Games] Update Game',
@@ -65,4 +48,23 @@ export const updateGameFailure = createAction(
     '[Games] Update Game Failure',
     props<{ error: string }>()
 );
+
+
+
+export const deleteGame = createAction(
+    '[Game] Delete Game',
+    props<{ gameId: number }>()
+    );
+    
+export const deleteGameSuccess = createAction(
+    '[Game] Delete Game Success',
+    props<{ gameId: number }>()
+    );
+
+export const deleteGameFailure = createAction(
+    '[Game] Delete Game Failure',
+    props<{ error: any }>()
+    );
+
+    
       

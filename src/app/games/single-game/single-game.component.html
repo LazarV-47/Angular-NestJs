@@ -11,17 +11,10 @@
         <mat-card-subtitle>Genre: {{ game.genre }}</mat-card-subtitle>
       </div>
 
-      <!-- Status -->
-      <div class="detail-column">
-        <mat-card-content>
-          <p>Status: {{ game.status }}</p>
-        </mat-card-content>
-      </div>
-
       <!-- Rating -->
       <div class="detail-column">
         <mat-card-content>
-          <p *ngIf="game.review; else pendingReview">Rating: {{ game.review.rating }}/10</p>
+          <p *ngIf="averageRating !== null; else pendingReview">Rating: {{ averageRating | number:'1.0-1' }}/10</p>
           <ng-template #pendingReview>
             <p>Review: Pending</p>
           </ng-template>
@@ -29,11 +22,41 @@
       </div>
     </div>
 
-    <!-- Delete Button -->
-    <div class="delete-button-container">
-      <button mat-fab aria-label color="warn" (click)="deleteGame($event)">
-        <mat-icon>delete</mat-icon>
-      </button>
+    <!-- Buttons -->
+    <div class="button-container">
+      <ng-container *ngIf="isLiked; else notLiked">
+        <button mat-fab aria-label="Unlike Game" color="warn" (click)="unlikeGame($event)">
+          <mat-icon>thumb_down</mat-icon>
+        </button>
+      </ng-container>
+      
+      <!-- If the game is not liked, show Like button and status selector -->
+      <ng-template #notLiked>
+        <button mat-fab aria-label="Like Game" color="primary" (click)="likeGame($event)">
+          <mat-icon color="primary">thumb_up</mat-icon>
+        </button>
+      
+        <mat-form-field appearance="fill" subscriptSizing="dynamic" class="status-selector" (click)="$event.stopPropagation()">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="selectedStatus" (click)="$event.stopPropagation()">
+            <mat-option value="want to play">Want to Play</mat-option>
+            <mat-option value="playing">Playing</mat-option>
+            <mat-option value="played">Played</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-template>
+
+      <!-- Admin Buttons -->
+      <ng-container *ngIf="isAdmin()">
+        <button mat-fab aria-label="Edit Game" color="accent" [routerLink]="['/edit-game', game.id]">
+          <mat-icon color="accent">edit</mat-icon>
+        </button>
+        <button mat-fab aria-label="Delete Game" color="warn" (click)="deleteGame($event)">
+          <mat-icon  color="warn">delete</mat-icon>
+        </button>
+      </ng-container>
     </div>
   </div>
 </mat-card>
+
+

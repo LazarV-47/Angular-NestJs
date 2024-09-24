@@ -28,17 +28,6 @@
       </div>
 
       <div class="form-group">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Status</mat-label>
-          <mat-select id="status" formControlName="status">
-            <mat-option value="played">Played</mat-option>
-            <mat-option value="playing">Playing</mat-option>
-            <mat-option value="want to play">Want to Play</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="form-group">
         <label for="picture" class="file-input-label">Game Cover</label>
         <input type="file" id="picture" (change)="onFileChange($event)">
       </div>

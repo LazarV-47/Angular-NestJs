@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable, switchMap, take } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AuthState } from './auth.reducer';
+import { AuthState } from './auth.state';
 import { selectAuthToken } from './auth.selectors';
 
 @Injectable()

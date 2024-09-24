@@ -6,10 +6,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AuthState } from '../auth.reducer';
+import { AuthState } from '../auth.state';
 import { login } from '../auth.actions';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { LoginDTO } from '../auth-dto/login.dto';
 
 @Component({
   selector: 'app-login',
@@ -38,8 +39,8 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      this.store.dispatch(login({ username, password }));
+      const credentials: LoginDTO = this.loginForm.value;
+      this.store.dispatch(login({credentials}));
     }
   }
 }

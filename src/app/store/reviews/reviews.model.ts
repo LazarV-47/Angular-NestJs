@@ -3,6 +3,6 @@ export interface Review {
     rating: number;
     comment: string;
     createdAt: Date;
-    gameId: number
+    gameId: number;
   }
   

@@ -48,17 +48,6 @@ export class GameDetailComponent {
     
     const gameId = +this.route.snapshot.paramMap.get('id')!;
 
-
-    if(gameId){
-      this.store.select(selectGameById(gameId)).subscribe((game) => {
-        if (game) {
-          this.game = game;
-          if(game.review){
-            this.store.dispatch(loadReview({ gameId: gameId }));
-          }
-        }
-      });
-    }
   }
 
 // Modify the methods
@@ -68,16 +57,5 @@ onAddReview(): void {
   }
 }
 
-editReview(): void {
-  if (this.game && this.game.review) {
-      this.router.navigate(['/edit-review', this.game.review.id], { queryParams: { gameId: this.game.id } });
-  }
-}
-
-deleteReview(): void {
-  if (this.game && this.game.review) {
-      this.store.dispatch(deleteReviewAction({ id: this.game.review.id }));
-  }
-}
 
 }

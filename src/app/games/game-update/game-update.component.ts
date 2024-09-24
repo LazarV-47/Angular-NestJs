@@ -55,7 +55,6 @@ export class GameUpdateComponent {
           this.gameForm.patchValue({
             title: game.title,
             genre: game.genre,
-            status: game.status,
             description: game.description
           });
         }

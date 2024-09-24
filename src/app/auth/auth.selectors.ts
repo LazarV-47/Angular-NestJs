@@ -1,40 +1,31 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { AuthState } from './auth.reducer';
+import { AuthState } from './auth.state';
 import { User } from './user.model';
+import { adapter } from './auth.reducer';
 
 export const selectAuthState = createFeatureSelector<AuthState>('auth');
 
-export const selectIsAuthenticated = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.isAuthenticated
-);
+const { selectAll: selectAllUsers, selectEntities: selectUserEntities } = adapter.getSelectors(selectAuthState);
 
+
+// Select a user by ID
+export const selectUserById = (userId: number) => 
+  createSelector(selectUserEntities, entities => entities[userId]);
+
+// Select token from the state
 export const selectAuthToken = createSelector(
   selectAuthState,
   (state: AuthState) => state.token
 );
 
+// Select authentication status
+export const selectIsAuthenticated = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.isAuthenticated
+);
+
+// Select error message
 export const selectAuthError = createSelector(
   selectAuthState,
   (state: AuthState) => state.error
-);
-
-export const selectUser = createSelector(
-  selectAuthState,
-  (state: AuthState) => state.user
-);
-
-export const selectUsername = createSelector(
-  selectUser,
-  (user: User | null) => user ? user.username : null
-);
-
-export const selectUserEmail = createSelector(
-  selectUser,
-  (user: User | null) => user ? user.email : null
-);
-
-export const selectUserProfilePicture = createSelector(
-  selectUser,
-  (user: User | null) => user ? user.profilePicture : null
 );

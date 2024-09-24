@@ -6,7 +6,6 @@ export interface Game {
     genre: string;
     description: string;
     picture?: File;
-    status: 'played' | 'playing' | 'want to play';
-    review?: Review;
+    reviews: Review[];
   }
   

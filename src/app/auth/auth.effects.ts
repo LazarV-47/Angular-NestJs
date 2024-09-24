@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { act, Actions, createEffect, ofType } from '@ngrx/effects';
 import { login, loginSuccess, loginFailure, register, registerSuccess, registerFailure, logout } from './auth.actions';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { User } from './user.model';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable()
 export class AuthEffects {
@@ -18,9 +20,21 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(login),
       mergeMap(action =>
-        this.authService.login(action.username, action.password).pipe(
-          // tap(response => console.log('Login Response:', response)), // Log response here
-          map(response => loginSuccess({ token: response.token, user: response.user })),
+        this.authService.login(action.credentials).pipe(
+          //tap(response => console.log('Login Response:', response)),
+          map(response => {
+            //tap(response => console.log('Login Response:', response));
+            const decodedToken: any = jwtDecode(response.token);
+            const user: User = {
+              userId: decodedToken.sub,
+              username: decodedToken.username,
+              email: decodedToken.email,
+              role: decodedToken.role,
+              picture: decodedToken.picture
+            };
+            //console.log(user)
+            return loginSuccess({ token: response.token, user: user });
+          }),
           catchError(error => of(loginFailure({ error: error.message })))
         )
       )
@@ -55,10 +69,18 @@ export class AuthEffects {
       ofType(register),
       mergeMap(action => {
         // console.log('Register Action in Effect', action);  // Check if this is reached
-        return this.authService.register(action.username, action.email, action.password, action.picture).pipe(
+        return this.authService.register(action.credentials).pipe(
           map(response => {
             // console.log('Register Success Response', response);  // Check if this is reached
-            return registerSuccess({ token: response.token, user: response.user });
+            const decodedToken: any = jwtDecode(response.token);
+            const user: User = {
+              userId: decodedToken.sub,
+              username: decodedToken.username,
+              email: decodedToken.email,
+              role: decodedToken.role,
+              picture: decodedToken.picture
+            };
+            return registerSuccess({ token: response.token, user: user });
           }),
           catchError(error => {
             // console.error('Register Failure', error);  // Log the error

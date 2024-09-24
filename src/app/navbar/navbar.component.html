@@ -7,10 +7,18 @@
   </div>
 
   <div class="nav-buttons">
-    <button mat-raised-button color="accent" routerLink="/new-game">
+    <ng-container *ngIf="isAdmin()">
+      <button mat-raised-button color="accent" routerLink="/new-game">
+        <mat-icon>add_circle</mat-icon>
+        New Game
+      </button>
+    </ng-container>
+    
+    <button mat-raised-button color="accent" routerLink="/">
       <mat-icon>add_circle</mat-icon>
-      New Game
+      Your games
     </button>
+
     <button mat-raised-button color="accent" routerLink="/game-list">
       <mat-icon>view_list</mat-icon>
       Game List

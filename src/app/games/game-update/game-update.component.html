@@ -27,19 +27,6 @@
         <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
 
-      <!-- Status Field -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Status</mat-label>
-        <mat-select formControlName="status" required>
-          <mat-option value="played">Played</mat-option>
-          <mat-option value="playing">Playing</mat-option>
-          <mat-option value="want to play">Want to Play</mat-option>
-        </mat-select>
-        <mat-error *ngIf="gameForm.get('status')?.hasError('required')">
-          Status is required
-        </mat-error>
-      </mat-form-field>
-
       <!-- Game Picture Field -->
       <div class="file-input-container">
         <label>Game Picture</label>

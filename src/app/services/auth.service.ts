@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { User } from '../auth/user.model';
-import { AuthState } from '../auth/auth.reducer';
+import { AuthState } from '../auth/auth.state';
 import { Store } from '@ngrx/store';
 import { loginSuccess, registerSuccess } from '../auth/auth.actions';
+import { LoginDTO } from '../auth/auth-dto/login.dto';
+import { RegisterDTO } from '../auth/auth-dto/register.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -14,30 +16,12 @@ export class AuthService {
 
   constructor(private http: HttpClient, private store: Store<AuthState>) {}
 
-  login(username: string, password: string): Observable<{ token: string, user: User }> {
-    return this.http.post<{ token: string, user: User }>(`${this.apiUrl}/login`, { username, password })
-      .pipe(
-        tap(response => {
-          this.store.dispatch(loginSuccess({ token: response.token, user: response.user }));
-        })
-      );
+  login(credentials: LoginDTO): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, credentials);
   }
 
-  register(username: string, email: string, password: string, picture: File | null): Observable<{ token: string, user: User }> {
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('email', email);
-    formData.append('password', password);
-    if (picture) {
-      formData.append('picture', picture);
-    }
-
-    return this.http.post<{ token: string, user: User }>(`${this.apiUrl}/register`, formData)
-      .pipe(
-        tap(response => {
-          this.store.dispatch(registerSuccess({ token: response.token, user: response.user }));
-        })
-      );
+  register(credentials: RegisterDTO): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/register`, credentials);
   }
 
   getUserDetails(): Observable<any> {

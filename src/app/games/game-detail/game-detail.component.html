@@ -15,22 +15,8 @@
     <!-- Genre and Status Row -->
     <div class="genre-status-row">
       <span>Genre: {{ game?.genre }}</span>
-      <span>Status: {{ game?.status }}</span>
     </div>
 
-    <!-- Review Information -->
-    <div *ngIf="game?.review" class="review-info">
-      <h3>Review</h3>
-      <p>Rating: {{ game?.review!.rating }}</p>
-      <p>Comment: {{ game?.review!.comment }}</p>
-      <button mat-raised-button color="accent" (click)="editReview()">Edit Review</button>
-      <button mat-raised-button color="warn" (click)="deleteReview()">Delete Review</button>
-    </div>
-
-    <!-- Add Review Button -->
-    <div *ngIf="!game?.review">
-      <button mat-raised-button color="primary" (click)="onAddReview()" [disabled]="showReviewForm">Add Review</button>
-    </div>
   </mat-card-content>
 
   <!-- Edit Game Button -->
