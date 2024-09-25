@@ -40,7 +40,7 @@ export class LikedGameEffects {
       ofType(unlikeGame),
       mergeMap(({ gameId }) =>
         this.likedGameService.unlikeGame(gameId).pipe(
-          map(({ likedGameId }) => unlikeGameSuccess({ likedGameId })), // Use likedGameId from the response
+          map(({ likedGameId }) => unlikeGameSuccess({ likedGameId })),
           catchError((error) => of(unlikeGameFailure({ error })))
         )
       )

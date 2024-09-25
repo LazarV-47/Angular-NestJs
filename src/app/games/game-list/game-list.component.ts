@@ -18,6 +18,9 @@ import { selectAuthToken } from '../../auth/auth.selectors';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../../auth/user.model';
 import { loadLikedGames } from '../../store/liked-game/liked-game.actions';
+import { Review } from '../../store/reviews/reviews.model';
+import { selectAllReviews } from '../../store/reviews/review.selectors';
+import { loadAllReviews } from '../../store/reviews/reviews.actions';
 
 @Component({
   selector: 'app-game-list',
@@ -37,6 +40,7 @@ import { loadLikedGames } from '../../store/liked-game/liked-game.actions';
 })
 export class GameListComponent implements OnInit{
   games$: Observable<Game[]>;
+  //reviews$: Observable<Review[]>;
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
 
@@ -45,10 +49,12 @@ export class GameListComponent implements OnInit{
 
   constructor(private store: Store<GamesState>) {
     this.games$ = this.store.select(selectAllGames);
+    //this.reviews$ = this.store.select(selectAllReviews);
     this.loading$ = this.store.select(selectGamesLoading);
     this.error$ = this.store.select(selectGamesError);
     
     this.store.dispatch(loadGames());
+    //this.store.dispatch(loadAllReviews());
 
     this.store.select(selectAuthToken).subscribe(token => {
       if (token) {
@@ -60,7 +66,7 @@ export class GameListComponent implements OnInit{
 
 
   ngOnInit(): void {
-    console.log("Dispatching loadLikedGames action in parent");
+    //console.log("Dispatching loadLikedGames action in parent");
     this.store.dispatch(loadLikedGames());
   }
 

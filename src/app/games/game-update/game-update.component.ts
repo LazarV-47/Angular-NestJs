@@ -41,7 +41,6 @@ export class GameUpdateComponent {
     this.gameForm = this.fb.group({
       title: ['', Validators.required],
       genre: ['', Validators.required],
-      status: ['', Validators.required],
       description: ['']
     });
 

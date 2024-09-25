@@ -21,7 +21,14 @@ export class AuthService {
   }
 
   register(credentials: RegisterDTO): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/register`, credentials);
+    const formData = new FormData();
+    formData.append('username', credentials.username);
+    formData.append('email', credentials.email);
+    formData.append('password', credentials.password);
+    if(credentials.picture){
+      formData.append('picture', credentials.picture);
+    }
+    return this.http.post<{ token: string }>(`${this.apiUrl}/register`, formData);
   }
 
   getUserDetails(): Observable<any> {

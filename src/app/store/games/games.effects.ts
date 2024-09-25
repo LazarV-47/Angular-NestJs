@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { GameService } from '../../services/game.service';
 import { loadGames, loadGamesSuccess, loadGamesFailure, addGame, addGameSuccess, addGameFailure, deleteGame, deleteGameSuccess, deleteGameFailure, updateGame, updateGameSuccess, updateGameFailure } from './games.actions';
 import { catchError, concatMap, map, mergeMap, of, switchMap, tap } from 'rxjs';
-import { addReview } from '../reviews/reviews.actions';
 import { Router } from '@angular/router';
 
 @Injectable()

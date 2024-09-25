@@ -6,7 +6,7 @@ import { AuthState } from './auth.state';
 
 
 export const adapter: EntityAdapter<User> = createEntityAdapter<User>({
-  selectId: (user: User) => user.userId, // Use 'userId' as the unique identifier
+  selectId: (user: User) => user.id, // Use 'userId' as the unique identifier
   sortComparer: false
 });
 

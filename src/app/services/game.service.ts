@@ -36,7 +36,7 @@ export class GameService {
     if (game.picture) {
       formData.append('picture', game.picture);
     }
-    return this.http.put<Game>(`${this.apiUrl}/${game.id}`, formData);
+    return this.http.patch<Game>(`${this.apiUrl}/updateGame/${game.id}`, formData);
   }
 
 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { editReview } from '../../store/reviews/reviews.actions';
+import { updateReview } from '../../store/reviews/reviews.actions';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { selectReviewById } from '../../store/reviews/review.selectors';
+import { ReviewDTO } from '../../dto/review.dto';
+import { UpdateReviewDTO } from '../../dto/update-review.dto';
 
 @Component({
   selector: 'app-review-update',
@@ -57,12 +59,11 @@ export class ReviewUpdateComponent {
 
   onSubmit() {
     if (this.reviewForm.valid && this.gameId !== undefined) {
-      const updatedReview = {
+      const updatedReview: UpdateReviewDTO = {
         id: this.reviewId,
         ...this.reviewForm.value,
-        gameId: this.gameId
       };
-      this.store.dispatch(editReview({ review: updatedReview }));
+      this.store.dispatch(updateReview({ review: updatedReview }));
       this.router.navigate(['/game-detail', this.gameId]);
     }else{
       console.error('Form is invalid or gameId is undefined');

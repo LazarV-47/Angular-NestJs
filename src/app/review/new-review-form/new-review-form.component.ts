@@ -45,7 +45,7 @@ export class NewReviewFormComponent {
         ...this.reviewForm.value
       };
       this.store.dispatch(addReview({ review }));
-      this.router.navigate(['/game-detail', this.gameId]);
+      //this.router.navigate(['/game-detail', this.gameId]);
     }
   }
 }

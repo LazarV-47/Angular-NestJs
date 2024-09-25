@@ -26,7 +26,7 @@ export class AuthEffects {
             //tap(response => console.log('Login Response:', response));
             const decodedToken: any = jwtDecode(response.token);
             const user: User = {
-              userId: decodedToken.sub,
+              id: decodedToken.sub,
               username: decodedToken.username,
               email: decodedToken.email,
               role: decodedToken.role,
@@ -74,7 +74,7 @@ export class AuthEffects {
             // console.log('Register Success Response', response);  // Check if this is reached
             const decodedToken: any = jwtDecode(response.token);
             const user: User = {
-              userId: decodedToken.sub,
+              id: decodedToken.sub,
               username: decodedToken.username,
               email: decodedToken.email,
               role: decodedToken.role,

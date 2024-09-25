@@ -8,10 +8,8 @@ import { MatCardModule }  from '@angular/material/card';
 import { MatFormFieldModule }  from '@angular/material/form-field';
 import { MatSelectModule }  from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { Review } from '../../store/reviews/reviews.model';
 import { NavbarComponent } from "../../navbar/navbar.component";
 import { MatInputModule } from '@angular/material/input';
-import { ReviewTempService } from '../../services/review-temp.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
 
@@ -40,7 +38,6 @@ export class NewGameFormComponent {
       title: ['', Validators.required],
       genre: ['', Validators.required],
       description: ['', Validators.required],
-      status: ['want to play', Validators.required],
     });
   }
 

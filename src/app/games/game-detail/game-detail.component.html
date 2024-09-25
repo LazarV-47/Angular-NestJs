@@ -1,26 +1,72 @@
 <app-navbar></app-navbar>
-<mat-card class="game-detail-card">
+<mat-card *ngIf="game$ | async as game">
+  <!-- Game Image and Description -->
+  <mat-card-header>
+    <mat-card-title>{{ game.title }}</mat-card-title>
+    <mat-card-subtitle>{{ game.genre }}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="backendUrl + game.picture" alt="Game Image" />
   <mat-card-content>
-    <!-- Game Image and Description Row -->
-    <div class="game-info">
-      <img *ngIf="game?.picture" [src]="backendUrl + game?.picture" alt="{{ game!.title }}" class="game-image"/>
-      <div class="game-description">
-        <p>{{ game?.description }}</p>
+    <p>{{ game.description }}</p>
+    <div class="game-rating-controls">
+      <div class="average-rating">
+        <mat-icon>star</mat-icon>
+        <span>Average Rating: {{ averageRating || 'No Ratings Yet' }}</span>
       </div>
     </div>
-
-    <!-- Game Title -->
-    <h2 class="game-title">{{ game?.title }}</h2>
-
-    <!-- Genre and Status Row -->
-    <div class="genre-status-row">
-      <span>Genre: {{ game?.genre }}</span>
-    </div>
-
   </mat-card-content>
 
-  <!-- Edit Game Button -->
   <mat-card-actions>
-    <button mat-flat-button color="primary" [routerLink]="['/edit-game', game!.id]">Edit Game</button>
+    <!-- Show the loading spinner while the like/unlike action is processing -->
+    <ng-container *ngIf="isLoading$ | async; else buttons">
+      <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+    </ng-container>
+
+    <ng-template #buttons>
+      <!-- Like Game button and Status selection -->
+      <ng-container *ngIf="!isLiked; else unlikeButton">
+        <mat-form-field appearance="fill">
+          <mat-label>Choose Status</mat-label>
+          <mat-select [(value)]="selectedStatus">
+            <mat-option value="Want to Play">Want to Play</mat-option>
+            <mat-option value="Playing">Playing</mat-option>
+            <mat-option value="Played">Played</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="toggleLikeGame()">
+          <mat-icon>thumb_up</mat-icon> Like Game
+        </button>
+      </ng-container>
+
+      <!-- Unlike Game button -->
+      <ng-template #unlikeButton>
+        <button mat-raised-button color="warn" (click)="toggleLikeGame()">
+          <mat-icon>thumb_down</mat-icon> Unlike Game
+        </button>
+      </ng-template>
+    </ng-template>
   </mat-card-actions>
+
+  <!-- User's Review Section -->
+  <mat-divider></mat-divider>
+  <h2>Your Review</h2>
+  <div *ngIf="userReview; else addReview">
+    <mat-card>
+      <mat-card-content>
+        <p>Rating: {{ userReview.rating }}</p>
+        <p>Comment: {{ userReview.comment }}</p>
+        <button mat-button (click)="navigateToEditReview(userReview.id)">Edit Review</button>
+        <button mat-button (click)="deleteReview(userReview.id)">Delete Review</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <ng-template #addReview>
+    <button mat-raised-button (click)="navigateToAddReview(game.id)">Add Review</button>
+  </ng-template>
+
+  <!-- All Reviews (Excluding User's Review) -->
+  <h2>All Reviews</h2>
+  <div *ngFor="let review of (reviews$ | async)">
+    <review-single-list *ngIf="review.user.id !== loggedInUser.id" [review]="review"></review-single-list>
+  </div>
 </mat-card>

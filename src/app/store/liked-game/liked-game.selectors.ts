@@ -12,8 +12,14 @@ export const {
   selectTotal: selectLikedGameTotal,
 } = adapter.getSelectors(selectLikedGameState);
 
-export const selectIsGameLiked = (gameId: number) =>
-  createSelector(selectLikedGameEntities, (entities) => !!entities[gameId]);
+export const selectIsGameLiked = (gameId: number, userId: number) =>
+  createSelector(selectLikedGameEntities, (entities) => {
+    console.log('Liked Game Entities:', entities); 
+    return Object.values(entities).some((likedGame: any) => likedGame.game.id === gameId && likedGame.user.id === userId);
+  });
+
+export const selectLikedGameStatus = (gameId: number) =>
+  createSelector(selectLikedGameEntities, (entities) => entities[gameId]?.status || 'Want to Play');
 
 
 // Selector to get the loading state

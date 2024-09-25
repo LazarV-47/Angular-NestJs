@@ -2,7 +2,6 @@ import { createReducer, on } from '@ngrx/store';
 import { loadGamesSuccess, addGameSuccess, deleteGameSuccess, updateGameSuccess, loadGames, loadGamesFailure, addGameFailure, updateGameFailure, deleteGameFailure } from './games.actions';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Game } from './games.model';
-import { updateGameReview } from '../reviews/reviews.actions';
 import { GamesState } from './games.state';
 
 // export interface GamesState extends EntityState<Game> {

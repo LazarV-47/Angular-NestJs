@@ -48,7 +48,7 @@ export class RegisterComponent {
       const credentials: RegisterDTO = this.registerForm.value;
       credentials.picture = this.selectedFile;
       //console.log("Form Submitted", this.registerForm.value);
-      console.log("Passed info for register", credentials);
+      //console.log("Passed info for register", credentials);
       this.store.dispatch(register({credentials}));
     }
   }

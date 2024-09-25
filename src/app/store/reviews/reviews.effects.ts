@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ReviewService } from '../../services/review.service';
-import { loadReview, loadReviewSuccess, loadReviewFailure, addReview, addReviewSuccess, addReviewFailure, editReview, editReviewFailure, editReviewSuccess, deleteReviewSuccess, deleteReviewFailure, deleteReview, updateGameReview } from './reviews.actions';
-import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { addReview, addReviewFailure, addReviewSuccess, deleteReview, deleteReviewFailure, deleteReviewSuccess, loadAllReviews, loadAllReviewsFailure, loadAllReviewsSuccess, loadReviews, loadReviewsFailure, loadReviewsSuccess, updateReview, updateReviewFailure, updateReviewSuccess } from './reviews.actions';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ReviewsEffects {
-  constructor(private actions$: Actions, private reviewService: ReviewService) {}
+  constructor(private actions$: Actions, private reviewService: ReviewService, private router: Router) {}
 
   loadReviews$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadReview),
-      mergeMap(({ gameId }) =>
-        this.reviewService.getReviewByGameId(gameId).pipe(
-          //tap(review => console.log(review)),
-          map(review => loadReviewSuccess({ review })),
-          catchError(error => of(loadReviewFailure({ error })))
+      ofType(loadReviews),
+      mergeMap((action) =>
+        this.reviewService.getReviewsByGameId(action.gameId).pipe(
+          map((reviews) => loadReviewsSuccess({ reviews })),
+          catchError((error) => of(loadReviewsFailure({ error })))
         )
       )
     )
@@ -24,65 +24,59 @@ export class ReviewsEffects {
   addReview$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addReview),
-      tap(({ review }) => console.log('Effect triggered with review:', review)),
-      switchMap(({ review }) =>
-        this.reviewService.addReview(review).pipe(
-          tap(newReview => console.log('Review added:', newReview)),
-          map(newReview => addReviewSuccess({ review: newReview })),
-          catchError(error => of(addReviewFailure({ error })))
+      concatMap((action) =>
+        this.reviewService.addReview(action.review).pipe(
+          map((review) => addReviewSuccess({ review })),
+          catchError((error) => of(addReviewFailure({ error })))
         )
       )
     )
   );
 
-  updateGameAfterReview$ = createEffect(() =>
+  addReviewSuccessNavigate = createEffect(() =>
     this.actions$.pipe(
-      ofType(addReviewSuccess, editReviewSuccess),
-      tap(({ review }) => console.log('Effect triggered with review:', review)),
-      map(({ review }) => 
-        updateGameReview({ gameId: review.gameId, review }))
+      ofType(addReviewSuccess, updateReviewSuccess),
+      concatMap((action) => {
+        const gameId = action.review.game.id;
+        return this.router.navigate(['/game-detail', gameId]);
+      })
+    ),
+    { dispatch: false }
+  );
+
+  updateReview$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateReview),
+      concatMap((action) =>
+        this.reviewService.updateReview(action.review).pipe(
+          map((review) => updateReviewSuccess({ review })),
+          catchError((error) => of(updateReviewFailure({ error })))
+        )
+      )
     )
   );
 
-  editReview$ = createEffect(() =>
+  deleteReview$ = createEffect(() =>
     this.actions$.pipe(
-        ofType(editReview),
-        switchMap(({ review }) =>
-            this.reviewService.updateReview(review).pipe(
-                tap(newReview => console.log('Review edited:', newReview)),
-                map(updatedReview => editReviewSuccess({ review: updatedReview })),
-                catchError(error => of(editReviewFailure({ error })))
-            )
+      ofType(deleteReview),
+      mergeMap((action) =>
+        this.reviewService.deleteReview(action.reviewId).pipe(
+          map(() => deleteReviewSuccess({ reviewId: action.reviewId })),
+          catchError((error) => of(deleteReviewFailure({ error })))
         )
-    )
-);
-
-deleteReview$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(deleteReview),
-    mergeMap(({ id }) =>
-      this.reviewService.getReview(id).pipe(
-        mergeMap(review => {
-          if (review && review.gameId) {
-            return this.reviewService.deleteReview(id).pipe(
-              map(() => deleteReviewSuccess({ id: review.id, gameId: review.gameId })),
-              catchError(error => of(deleteReviewFailure({ error })))
-            );
-          } else {
-            return of(deleteReviewFailure({ error: 'Review or Game not found' }));
-          }
-        }),
-        catchError(error => of(deleteReviewFailure({ error })))
       )
     )
-  )
-);
+  );
 
-updateGameAfterReviewDelete$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(deleteReviewSuccess),
-    map(({ gameId }) => updateGameReview({ gameId: gameId, review: undefined }))
-  )
-);
-  
+  loadAllReviews$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadAllReviews),
+      mergeMap(() =>
+        this.reviewService.getAllReviews().pipe(
+          map((reviews) => loadAllReviewsSuccess({ reviews })),
+          catchError((error) => of(loadAllReviewsFailure({ error })))
+        )
+      )
+    )
+  );
 }

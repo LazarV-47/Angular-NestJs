@@ -36,7 +36,10 @@ export const likedGameReducer = createReducer(
     })
   ),
   on(unlikeGameSuccess, (state, { likedGameId }) => 
-    adapter.removeOne(likedGameId, { ...state, loading: false })
+    adapter.removeOne(likedGameId, {
+       ...state,
+      loading: false 
+    })
   ),
   on(
     addLikedGameFailure,

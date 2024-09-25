@@ -1,53 +1,80 @@
-.game-detail-card {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-}
-
-.game-info {
+.game-header {
   display: flex;
-  gap: 20px;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
-.game-image {
-  max-width: 200px;
-  height: auto;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+mat-card {
+  margin: 20px;
 }
 
-.game-description {
-  flex: 1;
-  overflow: hidden;
+mat-card-header {
+  display: flex;
+  justify-content:center ;
 }
 
-.game-title {
+mat-card-title, mat-card-subtitle {
   text-align: center;
-  margin: 16px 0;
-  font-size: 24px;
   font-weight: bold;
+  font-size: 1.5rem;  /* Increased font size */
+  margin-top: 10px;
 }
 
-.genre-status-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 16px;
-  margin-bottom: 16px;
+img[mat-card-image] {
+  max-width: 100%;
+  height: auto;
+  max-height: 400px; /* Limit the picture size */
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
-.review-info {
-  margin: 20px 0;
-}
-
-.review-form {
-  margin: 20px 0;
+mat-card-content p {
+  text-align: justify;
+  margin: 10px 0;
 }
 
 mat-card-actions {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 20px; /* Spread the selector and like button */
+  margin-top: 15px;
+}
+
+mat-form-field {
+  width: 200px;
+}
+
+.game-rating-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.game-rating-controls .average-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between text and star icon */
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffb300; /* Golden color for the star */
+}
+
+.user-review {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.all-reviews {
   margin-top: 20px;
+}
+
+mat-divider {
+  margin: 20px 0;
 }
