@@ -3,11 +3,16 @@
   <div class="center-title-card">
     <mat-card>
       <mat-card-title>Game list</mat-card-title>
+      <!-- Search box for filtering games -->
+      <mat-form-field appearance="outline" class="search-box">
+        <mat-label>Search</mat-label>
+        <input matInput (input)="onSearchTermChanged($event)" placeholder="Search games">
+      </mat-form-field>
     </mat-card>
   </div>
 
   <!-- Displaying the list of games -->
-  <div *ngIf="games$ | async as games">
+  <div *ngIf="filteredGames$ | async as games">
     <div *ngFor="let game of games" class="game-item">
       <mat-card class="full-width-card" [routerLink]="['/game-detail', game.id]">
         <app-single-game [game]="game"></app-single-game>

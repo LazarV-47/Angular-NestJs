@@ -11,7 +11,7 @@
     <div class="game-rating-controls">
       <div class="average-rating">
         <mat-icon>star</mat-icon>
-        <span>Average Rating: {{ averageRating || 'No Ratings Yet' }}</span>
+        <span>Average Rating: {{ averageRating | number:'1.0-1' || 'No Ratings Yet' }}</span>
       </div>
     </div>
   </mat-card-content>

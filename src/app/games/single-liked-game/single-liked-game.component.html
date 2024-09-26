@@ -1,0 +1,44 @@
+<mat-card class="game-card">
+    <div class="game-info-container">
+        <!-- Game Picture -->
+        <img [src]="backendUrl + game.picture" alt="{{ game.title }}" class="game-image">
+
+        <!-- Game Info -->
+        <div class="game-details">
+            <!-- Title and Genre -->
+            <div class="detail-column">
+            <mat-card-title>{{ game.title }}</mat-card-title>
+            <mat-card-subtitle>Genre: {{ game.genre }}</mat-card-subtitle>
+            </div>
+
+            <!-- Rating -->
+            <div class="detail-column">
+            <mat-card-content>
+                <p *ngIf="averageRating !== null; else pendingReview">Rating: {{ averageRating | number:'1.0-1' }}/10</p>
+                <ng-template #pendingReview>
+                <p>Review: Pending</p>
+                </ng-template>
+            </mat-card-content>
+            </div>
+        </div>
+
+  
+        <div class="game-actions">
+        <button mat-button color="warn" (click)="unlikeGame($event)">
+            <mat-icon>thumb_down</mat-icon> Unlike
+        </button>
+        </div>
+
+        <!-- Admin Buttons -->
+      <ng-container *ngIf="isAdmin()">
+        <button mat-fab aria-label="Edit Game" color="accent" [routerLink]="['/edit-game', game.id]">
+          <mat-icon color="accent">edit</mat-icon>
+        </button>
+        <button mat-fab aria-label="Delete Game" color="warn" (click)="deleteGame($event)">
+          <mat-icon  color="warn">delete</mat-icon>
+        </button>
+      </ng-container>
+    </div>
+</mat-card>
+  
+  

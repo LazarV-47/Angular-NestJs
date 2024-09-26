@@ -3,6 +3,7 @@ import { LikedGame } from "./liked-game.model";
 import { LikedGameState } from "./liked-game.state";
 import { createReducer, on } from "@ngrx/store";
 import { addLikedGame, addLikedGameFailure, addLikedGameSuccess, loadLikedGames, loadLikedGamesFailure, loadLikedGamesSuccess, unlikeGameFailure, unlikeGameSuccess } from "./liked-game.actions";
+import { deleteGameSuccess } from "../games/games.actions";
 
 
 export const adapter: EntityAdapter<LikedGame> = createEntityAdapter<LikedGame>({
@@ -50,5 +51,12 @@ export const likedGameReducer = createReducer(
       error,
       loading: false,
     })
-  )
+  ),
+  on(deleteGameSuccess, (state, { gameId }) => {
+    // Remove any liked games associated with the deleted game
+    return adapter.removeMany(
+      (likedGame) => likedGame.game.id === gameId,
+      state
+    );
+  })
 );

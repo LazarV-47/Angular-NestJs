@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { updateReview } from '../../store/reviews/reviews.actions';
+import { loadReviews, updateReview } from '../../store/reviews/reviews.actions';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { selectReviewById } from '../../store/reviews/review.selectors';
 import { ReviewDTO } from '../../dto/review.dto';
 import { UpdateReviewDTO } from '../../dto/update-review.dto';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-review-update',
@@ -31,7 +32,7 @@ import { UpdateReviewDTO } from '../../dto/update-review.dto';
 export class ReviewUpdateComponent {
   reviewForm: FormGroup;
   reviewId: number;
-  gameId: number | undefined = undefined;
+  gameId: number;
 
   constructor(private fb: FormBuilder, private store: Store, private route: ActivatedRoute, private router: Router) {
     this.reviewForm = this.fb.group({
@@ -45,27 +46,36 @@ export class ReviewUpdateComponent {
   }
 
   loadReviewDetails() {
-    this.store.select(selectReviewById(this.reviewId)).subscribe(review => {
-      console.log('Review:', review);
-      if (review) {
-        console.log(review, this.gameId)
-        this.reviewForm.patchValue({
-          rating: review.rating,
-          comment: review.comment
-        });
-      }
-    });
+    this.store.select(selectReviewById(this.reviewId))
+      .pipe(take(1))  // Take only the first emission and unsubscribe
+      .subscribe(review => {
+        if (review) {
+          this.reviewForm.patchValue({
+            rating: review.rating,
+            comment: review.comment
+          });
+        } else {
+          console.error('Review not found');
+        }
+      });
   }
 
   onSubmit() {
     if (this.reviewForm.valid && this.gameId !== undefined) {
       const updatedReview: UpdateReviewDTO = {
-        id: this.reviewId,
+        id: this.reviewId, // Ensure reviewId is defined
         ...this.reviewForm.value,
       };
-      this.store.dispatch(updateReview({ review: updatedReview }));
-      this.router.navigate(['/game-detail', this.gameId]);
-    }else{
+      
+      if (this.reviewId) {  // Ensure reviewId is not undefined or null
+        this.store.dispatch(updateReview({ review: updatedReview }));
+        this.router.navigate(['/game-detail', this.gameId]).then(() => {
+          this.store.dispatch(loadReviews({ gameId: this.gameId }));
+        });
+      } else {
+        console.error('Review ID is undefined');
+      }
+    } else {
       console.error('Form is invalid or gameId is undefined');
     }
   }

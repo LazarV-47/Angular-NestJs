@@ -1,0 +1,41 @@
+<app-navbar></app-navbar>
+<div class="game-list-container">
+  <div class="center-title-card">
+    <mat-card>
+      <mat-card-title>Liked Games</mat-card-title>
+        <mat-form-field appearance="outline" class="search-box">
+        <mat-label>Search</mat-label>
+        <input matInput (input)="onSearchTermChanged($event)" placeholder="Search games">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="status-select">
+        <mat-label>Filter by Status</mat-label>
+        <mat-select (selectionChange)="onStatusChanged($event)">
+          <mat-option value="">All</mat-option>
+          <mat-option value="want to play">Want to Play</mat-option>
+          <mat-option value="playing">Playing</mat-option>
+          <mat-option value="played">Played</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+  </div>
+
+  <!-- Displaying the list of liked games -->
+  <div *ngIf="filteredGames$ | async as likedGames">
+    <div *ngFor="let likedGame of likedGames" class="game-item">
+      <mat-card class="full-width-card" [routerLink]="['/game-detail', likedGame.game.id]">
+        <app-single-liked-game [game]="likedGame.game"></app-single-liked-game>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="loading$ | async">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    <p>Loading liked games...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error$ | async as error">
+    <mat-error>{{ error }}</mat-error>
+  </div>
+</div>

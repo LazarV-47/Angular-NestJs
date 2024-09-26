@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ReviewService } from '../../services/review.service';
-import { catchError, concatMap, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { catchError, concatMap, filter, map, mergeMap, of, switchMap, take, tap } from 'rxjs';
 import { addReview, addReviewFailure, addReviewSuccess, deleteReview, deleteReviewFailure, deleteReviewSuccess, loadAllReviews, loadAllReviewsFailure, loadAllReviewsSuccess, loadReviews, loadReviewsFailure, loadReviewsSuccess, updateReview, updateReviewFailure, updateReviewSuccess } from './reviews.actions';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectReviewsByGameId } from './review.selectors';
+
 
 @Injectable()
 export class ReviewsEffects {
-  constructor(private actions$: Actions, private reviewService: ReviewService, private router: Router) {}
+  constructor(private actions$: Actions, private reviewService: ReviewService, private router: Router, private store: Store) {}
 
   loadReviews$ = createEffect(() =>
     this.actions$.pipe(
@@ -24,7 +27,7 @@ export class ReviewsEffects {
   addReview$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addReview),
-      concatMap((action) =>
+      mergeMap((action) =>
         this.reviewService.addReview(action.review).pipe(
           map((review) => addReviewSuccess({ review })),
           catchError((error) => of(addReviewFailure({ error })))
@@ -38,7 +41,23 @@ export class ReviewsEffects {
       ofType(addReviewSuccess, updateReviewSuccess),
       concatMap((action) => {
         const gameId = action.review.game.id;
-        return this.router.navigate(['/game-detail', gameId]);
+        // Wait for the state to update
+        return this.store.select(selectReviewsByGameId(gameId)).pipe(
+          filter(review => !!review), // Wait until the review is present in the state
+          take(1), // Ensure the selector only emits once the state is updated
+          tap(() => this.router.navigate(['/game-detail', gameId]))
+        );
+      })
+    ),
+    { dispatch: false } // No need to dispatch another action
+  );
+
+  addReviewSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addReviewSuccess, updateReviewSuccess),
+      tap((action) => {
+        console.log(action.review.game);
+        this.store.dispatch(loadReviews({ gameId: action.review.game.id }));
       })
     ),
     { dispatch: false }

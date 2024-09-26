@@ -19,8 +19,9 @@ export const selectReviewsByGameId = (gameId: number) => createSelector(
 );
 
 export const selectUserReviewByGameId = (gameId: number, userId: number) =>
-  createSelector(selectAllReviews, reviews => {
-    console.log('Reviews for User and Game:', reviews, { gameId, userId });
+  createSelector(selectAllReviews,
+     reviews => {
+    //console.log('Reviews for User and Game:', reviews, { gameId, userId });
     return reviews.find(review => review.game.id === gameId && review.user.id === userId) || null;
   });
 

@@ -4,6 +4,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, concatMap, map, mergeMap, of } from "rxjs";
 import { addLikedGame, addLikedGameFailure, addLikedGameSuccess, loadLikedGames, loadLikedGamesFailure, loadLikedGamesSuccess, unlikeGame, unlikeGameFailure, unlikeGameSuccess } from "./liked-game.actions";
 import { LikedGameService } from "../../services/liked-game.service";
+import { deleteGameSuccess } from "../games/games.actions";
 
 @Injectable()
 export class LikedGameEffects {
@@ -44,6 +45,13 @@ export class LikedGameEffects {
           catchError((error) => of(unlikeGameFailure({ error })))
         )
       )
+    )
+  );
+
+  reloadLikedGamesAfterGameDeletion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteGameSuccess),
+      map(() => loadLikedGames())  // Dispatch to reload the liked games after game deletion
     )
   );
 }

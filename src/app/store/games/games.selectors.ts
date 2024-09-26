@@ -26,4 +26,10 @@ export const selectGameById = (gameId: number) => createSelector(
   selectGameEntities, (entities) => entities[gameId]
 );
 
-
+export const selectFilteredGames = (searchTerm: string) => createSelector(
+  selectAllGames,
+  (games) => {
+    if (!searchTerm) return games;
+    return games.filter(game => game.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  }
+);

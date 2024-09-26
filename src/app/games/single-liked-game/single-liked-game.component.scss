@@ -1,0 +1,73 @@
+.game-card {
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.game-card:hover {
+  transform: scale(1.02);
+}
+
+.game-info-container {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  gap: 20px; /* Adds space between elements */
+  flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.game-image {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0; /* Prevent the image from shrinking */
+}
+
+.game-details {
+  display: flex;
+  align-items: flex-start; /* Aligns items to the top */
+  gap: 30px; /* Space between detail columns */
+  flex: 2; /* Allows the game details to take up more space */
+}
+
+.detail-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.game-actions button {
+  margin: 5px;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+mat-card-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+mat-card-content p {
+  margin: 0;
+}
+
+/* Style admin buttons */
+.ng-container button {
+  margin-left: 10px;
+}
+
+.status-selector {
+  min-width: 150px;
+  display: inline-flex;
+  vertical-align: middle;
+}

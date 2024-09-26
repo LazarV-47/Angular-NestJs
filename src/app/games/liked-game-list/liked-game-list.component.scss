@@ -1,0 +1,33 @@
+.game-list-container {
+    padding: 16px;
+}
+  
+.center-title-card {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Space between the title card and the game list */
+}
+  
+.center-title-card mat-card {
+    width: 100%; /* Adjust width to make it larger */
+    margin: 0 auto; /* Centers the card horizontally */
+    text-align: center; /* Center the text inside the card */
+    padding: 20px;
+    font-size: 1.8rem; /* Increase font size for a larger appearance */
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for emphasis */
+    border-radius: 8px;
+    background-color: cornflowerblue;
+  }
+  
+  
+.full-width-card {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  ::ng-deep .center-title-card mat-card-title {
+    font-size: 2rem; /* Increase font size */
+    font-family: Georgia, 'Times New Roman', Times, serif /* Change font family */
+  }
+  

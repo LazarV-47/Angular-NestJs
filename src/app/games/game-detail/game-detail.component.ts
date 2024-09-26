@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EMPTY, filter, Observable, take } from 'rxjs';
+import { EMPTY, filter, Observable, switchMap, take } from 'rxjs';
 import { selectGameById } from '../../store/games/games.selectors';
 import { selectAllLikedGames, selectIsGameLiked, selectLikedGamesLoading, selectLikedGameStatus } from '../../store/liked-game/liked-game.selectors';
 import { loadReviews, addReview, updateReview, deleteReview } from '../../store/reviews/reviews.actions';
@@ -53,50 +53,63 @@ export class GameDetailComponent implements OnInit {
   isLoading$: Observable<boolean> = EMPTY;
   likedGameStatus$: Observable<string> = EMPTY;
   loggedInUser!: User;
-  gameId: number | null;
+  gameId: number;
   averageRating: number | null = null;
   userReview: Review | null = null;
   selectedStatus: string = 'Want to Play';
   backendUrl = environment.backendUrl;
 
-  constructor(private route: ActivatedRoute, private store: Store, private router: Router, private cdr: ChangeDetectorRef) {
+  constructor(
+    private route: ActivatedRoute, 
+    private store: Store, 
+    private router: Router, 
+    private cdr: ChangeDetectorRef
+  ) {
+    // Initializing the gameId from the route parameters
     this.gameId = Number(this.route.snapshot.paramMap.get('id'));
+  }
 
-    this.game$ = this.store.select(selectGameById(this.gameId)).pipe(
-      filter((game): game is Game => !!game)
-    );
+  ngOnInit(): void {
+    // Load game details
+    this.loadGameDetails();
 
-    this.likedGameStatus$ = this.store.select(selectLikedGameStatus(this.gameId));
-    this.likedGameStatus$.subscribe(status => console.log('Liked Game Status:', status));
-
+    // Load reviews for the game
     this.store.dispatch(loadReviews({ gameId: this.gameId }));
     this.reviews$ = this.store.select(selectReviewsByGameId(this.gameId));
 
-    // Fetch user details from auth token
-    this.store.select(selectAuthToken).subscribe(token => {
-      if (token) {
-        const decodedToken: any = jwtDecode(token);
-        this.store.select(selectUserById(decodedToken.sub)).subscribe((user: User | undefined) => {
-          if (user && this.gameId) {
-            this.loggedInUser = user;
-            this.store.select(selectUserReviewByGameId(this.gameId, user.id)).subscribe(review => {
-              this.userReview = review;
-            });
-            this.checkIfGameIsLiked();
-          }
-        });
-      }
-      this.isLoading$ = this.store.select(selectLikedGamesLoading);
-    });
+    // Load user-related data
+    this.loadUserDetails();
 
+    // Calculate average rating whenever reviews change
     this.reviews$.subscribe(reviews => {
       const gameReviews = reviews.filter(review => review.game.id === this.gameId);
       this.calculateAverageRating(gameReviews);
     });
   }
 
-  ngOnInit(): void {
-    console.log("Component initialized");
+  loadGameDetails(): void {
+    this.game$ = this.store.select(selectGameById(this.gameId)).pipe(
+      filter((game): game is Game => !!game)
+    );
+    this.likedGameStatus$ = this.store.select(selectLikedGameStatus(this.gameId));
+  }
+
+  loadUserDetails(): void {
+    this.store.select(selectAuthToken).pipe(
+      filter(token => !!token),
+      switchMap(token => {
+        const decodedToken: any = jwtDecode(token!);
+        return this.store.select(selectUserById(decodedToken.sub));
+      }),
+      filter(user => !!user),
+      switchMap(user => {
+        this.loggedInUser = user;
+        return this.store.select(selectUserReviewByGameId(this.gameId, user.id));
+      })
+    ).subscribe(review => {
+      this.userReview = review;
+      this.checkIfGameIsLiked();
+    });
   }
 
   checkIfGameIsLiked(): void {
@@ -116,7 +129,6 @@ export class GameDetailComponent implements OnInit {
     } else {
       this.averageRating = null;
     }
-    console.log('Average Rating:', this.averageRating);
   }
 
   toggleLikeGame(): void {
@@ -132,16 +144,13 @@ export class GameDetailComponent implements OnInit {
     }
 
     this.isLiked = !this.isLiked;
-    this.cdr.detectChanges();
   }
 
   navigateToAddReview(gameId: number): void {
-    console.log('Navigating to Add Review for Game ID:', gameId);
     this.router.navigate([`/add-review/${gameId}`]);
   }
 
   navigateToEditReview(reviewId: number): void {
-    console.log('Navigating to Edit review for review ID:', reviewId);
     this.router.navigate([`/edit-review/${reviewId}`], { queryParams: { gameId: this.gameId } });
   }
 
