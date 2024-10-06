@@ -53,7 +53,6 @@ export const likedGameReducer = createReducer(
     })
   ),
   on(deleteGameSuccess, (state, { gameId }) => {
-    // Remove any liked games associated with the deleted game
     return adapter.removeMany(
       (likedGame) => likedGame.game.id === gameId,
       state

@@ -93,6 +93,6 @@ export class GameListComponent implements OnInit{
 
   onSearchTermChanged(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.searchTerm$.next(input.value);  // Update the BehaviorSubject when the input changes
+    this.searchTerm$.next(input.value); 
   }
 }

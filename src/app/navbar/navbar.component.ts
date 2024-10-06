@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from '../dto/decoded-token.dto';
 
 @Component({
   selector: 'app-navbar',
@@ -35,7 +36,7 @@ export class NavbarComponent {
   constructor(private store: Store<AuthState>, private router: Router) {
     this.store.select(selectAuthToken).subscribe(token => {
       if (token) {
-        const decodedToken: any = jwtDecode(token);
+        const decodedToken: DecodedToken = jwtDecode(token);
 
         this.store.select(selectUserById(decodedToken.sub)).subscribe((user: User | undefined) => {
           if (user) {

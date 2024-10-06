@@ -6,6 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from './user.model';
 import { jwtDecode } from "jwt-decode";
+import { DecodedToken } from '../dto/decoded-token.dto';
 
 @Injectable()
 export class AuthEffects {
@@ -24,7 +25,7 @@ export class AuthEffects {
           //tap(response => console.log('Login Response:', response)),
           map(response => {
             //tap(response => console.log('Login Response:', response));
-            const decodedToken: any = jwtDecode(response.token);
+            const decodedToken: DecodedToken = jwtDecode(response.token);
             const user: User = {
               id: decodedToken.sub,
               username: decodedToken.username,
@@ -72,7 +73,7 @@ export class AuthEffects {
         return this.authService.register(action.credentials).pipe(
           map(response => {
             // console.log('Register Success Response', response);  // Check if this is reached
-            const decodedToken: any = jwtDecode(response.token);
+            const decodedToken: DecodedToken = jwtDecode(response.token);
             const user: User = {
               id: decodedToken.sub,
               username: decodedToken.username,

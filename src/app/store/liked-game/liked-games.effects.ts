@@ -51,7 +51,7 @@ export class LikedGameEffects {
   reloadLikedGamesAfterGameDeletion$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteGameSuccess),
-      map(() => loadLikedGames())  // Dispatch to reload the liked games after game deletion
+      map(() => loadLikedGames()) 
     )
   );
 }
